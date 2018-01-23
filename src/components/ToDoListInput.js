@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 export class ToDoListInput extends Component {
-
   // FUNCTIONS - SCRIPT
   constructor(props) {
     super(props)
@@ -12,17 +11,17 @@ export class ToDoListInput extends Component {
     }
   }
 
-
   addTask() {
     let tasks = this.state.tasks
-    tasks.push({
-      title : this.taskVal.value
+    let title = this.taskVal.value
+    tasks.push(title)
+    this.setState({
+      tasks : tasks
     })
-    console.log(tasks)
     this.taskVal.value = ""
   }
 
-
+  // ========================================================
 
   render() {
 
@@ -53,12 +52,16 @@ export class ToDoListInput extends Component {
           <button onClick={this.addTask}>Add Task</button>
         </div>
 
-        <Pending/>
+        Pending Tasks
+        <Pending tasks={this.state.tasks}/>
+        Completed Tasks
         <Completed/>
       </div>
     )
   }
 }
+
+// ========================================================
 
 export class Pending extends Component {
 
@@ -69,24 +72,34 @@ export class Pending extends Component {
     }
 
     var styleItem = {
-      backgroundColor: "#5890D4",
-      border: ".5px solid black",
+      backgroundColor: "#97BCE8",
+      border: "1.5px solid #004AA4",
       marginTop: "1em",
       padding: ".5em",
       color: "white"
     }
 
+    let tasks = this.props.tasks
+
+    function createTask(task,index) {
+      return <li style={styleItem} key={index}>{task}<input type="checkbox"/></li>
+    }
+
+    let taskItems = tasks.map(createTask);
+
     return(
       <div style={listContainer}>
-        Pending Items
-        <li style={styleItem}>List Item 1</li>
-        <li style={styleItem}>List Item 2</li>
+        {taskItems}
       </div>
     )
   }
 }
 
+// ========================================================
+
 export class Completed extends Component {
+
+
   render() {
     var styleItem = {
       backgroundColor: "#5890D4",
@@ -97,8 +110,6 @@ export class Completed extends Component {
     }
     return(
       <div>
-      Completed Tasks
-      <li style={styleItem}>Completed Task 1</li>
       </div>
     )
   }
