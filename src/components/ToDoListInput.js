@@ -5,9 +5,12 @@ export class ToDoListInput extends Component {
   constructor(props) {
     super(props)
     this.addTask = this.addTask.bind(this)
+    this.markAsCompleted = this.markAsCompleted.bind(this)
+
 
     this.state = {
-      tasks : []
+      tasks : [],
+      completedTasks : []
     }
   }
 
@@ -21,41 +24,34 @@ export class ToDoListInput extends Component {
     this.taskVal.value = ""
   }
 
-  // ========================================================
+  markAsCompleted(task) {
+    let tasks = this.state.tasks
+    let pendingTasks = tasks.filter(function(pendAway){
+      return pendAway !== task
+    })
+    let completedTasks = this.state.completedTasks
+    completedTasks.push(task)
+    this.setState({
+      tasks : pendingTasks,
+      completedTasks : completedTasks
+    })
+  }
+
 
   render() {
 
-    // STYLING - CSS
-    var styleList = {
-      backgroundColor : "#E39917",
-      borderRadius: "5px",
-      margin: "5em auto 0 auto",
-      width: "20%"
-    }
-
-    var input_div = {
-      margin: "0 auto 0 auto",
-      textAlign: "center",
-      width: "50%",
-    }
-
-    var styleInput = {
-      marginTop: "2em",
-      fontSize: "1em"
-    }
-
     return(
-      <div style={styleList}>
+      <div>
 
-        <div style={input_div}>
-          <input ref={(taskVal) => this.taskVal = taskVal} type="text" style={styleInput}/><br/>
+        <div>
+          <input ref={(taskVal) => this.taskVal = taskVal} type="text"/><br/>
           <button onClick={this.addTask}>Add Task</button>
         </div>
 
         Pending Tasks
-        <Pending tasks={this.state.tasks}/>
+        <Pending tasks={this.state.tasks} completedCallback={this.markAsCompleted}/>
         Completed Tasks
-        <Completed/>
+        <Completed completedTasks={this.state.completedTasks}/>
       </div>
     )
   }
@@ -65,30 +61,24 @@ export class ToDoListInput extends Component {
 
 export class Pending extends Component {
 
+  constructor(props) {
+    super(props)
+    this.checkBox = this.checkBox.bind(this)
+  }
+
+  checkBox(task) {
+    this.props.completedCallback(task)
+  }
+
   render() {
 
-    var listContainer = {
-      marginBottom: "2em"
-    }
-
-    var styleItem = {
-      backgroundColor: "#97BCE8",
-      border: "1.5px solid #004AA4",
-      marginTop: "1em",
-      padding: ".5em",
-      color: "white"
-    }
-
     let tasks = this.props.tasks
-
-    function createTask(task,index) {
-      return <li style={styleItem} key={index}>{task}<input type="checkbox"/></li>
-    }
-
-    let taskItems = tasks.map(createTask);
+    let taskItems = tasks.map(function(task,index) {
+      return <li key={index+Date.now()}>{task}<input key={index+Date.now()} onClick={(e) => this.checkBox(task)} type="checkbox"/></li>
+    }.bind(this));
 
     return(
-      <div style={listContainer}>
+      <div>
         {taskItems}
       </div>
     )
@@ -99,17 +89,15 @@ export class Pending extends Component {
 
 export class Completed extends Component {
 
-
   render() {
-    var styleItem = {
-      backgroundColor: "#5890D4",
-      border: ".5px solid black",
-      marginTop: "1em",
-      padding: ".5em",
-      color: "white"
-    }
+    let completedTasks = this.props.completedTasks
+    let displayingTask = completedTasks.map(function(completedTask,index) {
+      return <li key={index+Date.now()}>{completedTask}</li>
+    })
+
     return(
       <div>
+        {displayingTask}
       </div>
     )
   }
