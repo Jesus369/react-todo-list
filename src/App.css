@@ -1,28 +1,47 @@
-.App {
+.styleList {
+  background-color : #E0E0E0;
+  border-radius: 5px;
+  margin: 5em auto 0 auto;
+  width: 20%;
+  padding: 2em;
+}
+
+.input_div {
+  margin: 0 auto 3em auto;
+  text-align: center;
+  width: 50%;
+}
+
+.styleInput {
+  font-size: .8em;
+  width: 100%;
+}
+
+.title {
+  background-color: #89C1C1;
+  border: 2px solid #47107E;
+  font-size: 1.1em;
+}
+
+.title {
+  background-color: #89C1C1;
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.listContainer {
+  margin-bottom: 2em;
+  position: relative;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+.styleItem {
+  background-color: #5890D4;
+  border: .5px solid black;
+  margin-top: 1em;
+  padding: .5em;
   color: white;
 }
 
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.delete_button {
+  position: absolute;
+  right: 0;
 }
